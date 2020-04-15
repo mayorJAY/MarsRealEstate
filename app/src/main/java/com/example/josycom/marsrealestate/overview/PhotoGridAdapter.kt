@@ -9,7 +9,7 @@ import com.example.josycom.marsrealestate.databinding.GridViewItemBinding
 import com.example.josycom.marsrealestate.network.MarsProperty
 import com.example.josycom.marsrealestate.overview.PhotoGridAdapter.MarsPropertyViewHolder
 
-class PhotoGridAdapter : ListAdapter<MarsProperty, MarsPropertyViewHolder>(DiffCallback) {
+class PhotoGridAdapter(private val onClickListener: OnClickListener) : ListAdapter<MarsProperty, MarsPropertyViewHolder>(DiffCallback) {
     companion object DiffCallback : DiffUtil.ItemCallback<MarsProperty>() {
         override fun areItemsTheSame(oldItem: MarsProperty, newItem: MarsProperty): Boolean {
             return oldItem === newItem
@@ -37,5 +37,10 @@ class PhotoGridAdapter : ListAdapter<MarsProperty, MarsPropertyViewHolder>(DiffC
     override fun onBindViewHolder(holder: MarsPropertyViewHolder, position: Int) {
         val marsProperty = getItem(position)
         holder.bind(marsProperty)
+        onClickListener.onClick(marsProperty)
+    }
+
+    class OnClickListener(val clickListener: (marsProperty: MarsProperty) -> Unit) {
+        fun onClick(marsProperty: MarsProperty) = clickListener(marsProperty)
     }
 }
